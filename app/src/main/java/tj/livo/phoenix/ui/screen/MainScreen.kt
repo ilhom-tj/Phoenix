@@ -62,47 +62,7 @@ fun HomeScreen() {
         sheetShape = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp),
         scaffoldState = bottomSheetScaffoldState,
         sheetContent = {
-
-            LazyVerticalGrid(cells = GridCells.Fixed(4), content = {
-                items(5) {
-                    Card(
-                        modifier = Modifier
-                            .fillMaxWidth(0.35f)
-                            .height(100.dp)
-                            .padding(8.dp)
-                            .background(Color.Black.copy(0.0f)),
-                        backgroundColor = Color.Black.copy(0.6f),
-                        shape = RoundedCornerShape(8.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(8.dp),
-                            verticalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .fillMaxWidth(0.5f)
-                                    .fillMaxHeight(0.5f)
-                                    .background(Color.White.copy(0.25f)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.sound),
-                                    contentDescription = "sound",
-                                )
-                            }
-                            Text(
-                                text = "Уровень громкости",
-                                color = Color.White,
-                                fontSize = 14.sp
-                            )
-                        }
-                    }
-                }
-            })
-
+                       BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
         },
         sheetPeekHeight = 0.dp
     ) {
