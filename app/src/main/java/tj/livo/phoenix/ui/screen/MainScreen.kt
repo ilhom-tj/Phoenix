@@ -78,8 +78,8 @@ fun HomeScreen() {
             )
             Box(
                 modifier = Modifier
-                    .fillMaxHeight(0.17f)
-                    .fillMaxWidth(0.4f)
+                    .fillMaxSize(0.3f)
+                    .aspectRatio(1f)
                     .padding(end = 16.dp)
                     .clip(CircleShape)
                     .clickable {
@@ -99,7 +99,8 @@ fun HomeScreen() {
                     painter = painterResource(id = R.drawable.ic_baseline_notifications_24),
                     contentDescription = "menu",
                     colorFilter = ColorFilter.tint(Color.White),
-                    modifier = Modifier.fillMaxSize(0.4f)
+                    modifier = Modifier
+                        .fillMaxSize(0.4f)
                 )
 
             }

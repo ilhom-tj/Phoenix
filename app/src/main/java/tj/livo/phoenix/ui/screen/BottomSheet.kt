@@ -1,6 +1,7 @@
 package tj.livo.phoenix.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement.SpaceBetween
@@ -10,16 +11,26 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
+import androidx.constraintlayout.compose.Dimension
 import tj.livo.phoenix.ui.BottomSheetCard
 
 object BottomSheet {
@@ -44,6 +55,8 @@ fun BottomSheetGrid(list: List<BottomSheetCard>, modifier: Modifier) {
 
 @Composable
 fun BottomSheetCards(item: BottomSheetCard, modifier: Modifier) {
+
+    var multiplier = remember { mutableStateOf(1.3f) }
     Box(
         modifier = modifier
             .aspectRatio(1f)
@@ -53,31 +66,44 @@ fun BottomSheetCards(item: BottomSheetCard, modifier: Modifier) {
                 shape = RoundedCornerShape(6.dp)
             )
     ) {
+
         Column(
             modifier = modifier
                 .padding(8.dp)
                 .fillMaxSize(),
-            verticalArrangement = SpaceBetween
+            verticalArrangement = Arrangement.SpaceAround
         ) {
-            Icon(
+            Image(
                 imageVector = item.icon,
                 contentDescription = "",
                 modifier = modifier
+                    .fillMaxWidth(0.4f)
+                    .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
                         color = Color.Gray,
                     )
-                    .padding(16.dp),
-                tint = Color.White
+                    .padding(4.dp),
+                colorFilter = ColorFilter.tint(Color.White),
+                contentScale = ContentScale.Fit
+
             )
             Text(
                 text = item.title,
                 modifier = modifier
                     .padding(top = 8.dp),
-                fontSize = TextUnit.Unspecified,
+                style = LocalTextStyle.current.copy(
+                    fontSize = LocalTextStyle.current.fontSize * multiplier.value
+                ),
+                onTextLayout = {
+                    if (it.hasVisualOverflow) {
+                        multiplier.value *= .8f // you can tune this constant
+                    }
+                },
                 color = Color.White
             )
         }
+
     }
 }
 
