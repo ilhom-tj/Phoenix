@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -40,12 +42,15 @@ import tj.livo.phoenix.R
 @Composable
 fun MainScreen(navController: NavController? = null) {
 
-
-    val modalBottomState = remember {
-        mutableStateOf(false)
-    }
+    Image(
+        painter = painterResource(
+            id = R.drawable.background
+        ),
+        contentScale = ContentScale.Crop,
+        contentDescription = "background",
+        modifier = Modifier.fillMaxSize()
+    )
     HomeScreen()
-
 
 }
 
@@ -53,57 +58,9 @@ fun MainScreen(navController: NavController? = null) {
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen() {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
-    )
-    val coroutineScope = rememberCoroutineScope()
-    BottomSheetScaffold(
-        sheetBackgroundColor = Color.White.copy(0.5f),
-        sheetShape = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp),
-        scaffoldState = bottomSheetScaffoldState,
-        sheetContent = {
-                       BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
-        },
-        sheetPeekHeight = 0.dp
-    ) {
+    Column {
 
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.CenterEnd) {
-            Image(
-                painter = painterResource(
-                    id = R.drawable.background
-                ),
-                contentScale = ContentScale.Crop,
-                contentDescription = "background",
-                modifier = Modifier.fillMaxSize()
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(0.3f)
-                    .aspectRatio(1f)
-                    .padding(end = 16.dp)
-                    .clip(CircleShape)
-                    .clickable {
-                        coroutineScope.launch {
-                            if (bottomSheetScaffoldState.bottomSheetState.isCollapsed) {
-                                bottomSheetScaffoldState.bottomSheetState.expand()
-                            } else {
-                                bottomSheetScaffoldState.bottomSheetState.collapse()
-                            }
-                        }
 
-                    }
-                    .border(3.dp, Color.White, shape = CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_baseline_notifications_24),
-                    contentDescription = "menu",
-                    colorFilter = ColorFilter.tint(Color.White),
-                    modifier = Modifier
-                        .fillMaxSize(0.4f)
-                )
-
-            }
-        }
     }
+
 }
