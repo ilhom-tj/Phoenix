@@ -1,6 +1,9 @@
 package tj.livo.phoenix
 
+import android.content.Context
+import android.media.AudioManager
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +17,9 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
@@ -33,6 +38,9 @@ class MainActivity : ComponentActivity() {
     @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        val audioManager = LocalContext.current.getSystemService(Context.AUDIO_SERVICE) as AudioManager
+//        Log.e("Max", audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toString())
+//        Log.e("Current",audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC).toString())
         window.setFlags(
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
@@ -40,17 +48,18 @@ class MainActivity : ComponentActivity() {
         setContent {
             val navController = rememberNavController()
             val bottomSheetScaffoldState = rememberBottomSheetScaffoldState(
-                bottomSheetState = BottomSheetState(BottomSheetValue.Expanded)
+                bottomSheetState = BottomSheetState(BottomSheetValue.Collapsed)
             )
             val coroutineScope = rememberCoroutineScope()
             PhoenixTheme {
                 BottomSheetScaffold(
                     sheetBackgroundColor = Color.White.copy(0.5f),
-                    sheetShape = RoundedCornerShape(topStart = 6.dp, topEnd = 6.dp),
+                    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
                     scaffoldState = bottomSheetScaffoldState,
                     sheetContent = {
-                        BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
+//                        BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
                     },
+                    modifier = Modifier.clip(RoundedCornerShape(topStart = 8.dp,topEnd = 8.dp)),
                     sheetPeekHeight = 0.dp
                 ) {
                     NavHost(
