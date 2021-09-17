@@ -2,6 +2,8 @@ package tj.livo.phoenix.ui.screen
 
 import android.content.Context
 import android.text.Layout
+import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
@@ -60,10 +62,12 @@ fun MainScreen(navController: NavController? = null) {
 
 }
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
 fun HomeScreen() {
+    Log.e("OnRecreate","True")
     val modalBottomSheetState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Expanded)
     val coroutineScope = rememberCoroutineScope()
@@ -72,6 +76,7 @@ fun HomeScreen() {
         sheetState = modalBottomSheetState,
         sheetShape = RoundedCornerShape(topStart = 8.dp,topEnd = 8.dp),
         sheetContent = {
+
             BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
         },
     ) {

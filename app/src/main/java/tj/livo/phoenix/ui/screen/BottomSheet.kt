@@ -1,15 +1,9 @@
 package tj.livo.phoenix.ui.screen
 
-import android.content.ContentValues.TAG
-import android.content.Context
-import android.content.res.Resources
-import android.util.DisplayMetrics
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.*
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
@@ -20,32 +14,15 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.PaintingStyle.Companion.Stroke
-import androidx.compose.ui.graphics.PointMode
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import tj.livo.phoenix.ui.BottomSheetCard
 import tj.livo.phoenix.ui.components.VolumeChanger
-import java.lang.Math.*
-import kotlin.math.cos
-import kotlin.math.sin
 
 object BottomSheet {
     val bottomSheetCards = listOf(
@@ -59,18 +36,22 @@ object BottomSheet {
     )
 }
 
+@ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
 fun BottomSheetGrid(list: List<BottomSheetCard>, modifier: Modifier) {
+
     Column(
-        modifier = Modifier.fillMaxWidth().padding(16.dp)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
         val volumeChangerState = remember {
             mutableStateOf(false)
         }
         val coroutineScope = rememberCoroutineScope()
-          if (volumeChangerState.value) {
-              VolumeChanger()
+        AnimatedVisibility(visible = volumeChangerState.value) {
+            VolumeChanger()
         }
         LazyVerticalGrid(cells = GridCells.Fixed(4)) {
             items(list) { item ->
@@ -90,6 +71,12 @@ fun BottomSheetGrid(list: List<BottomSheetCard>, modifier: Modifier) {
 @Composable
 fun BottomSheetCards(item: BottomSheetCard, modifier: Modifier, onClick: () -> Unit) {
 
+    var isSelected by remember {
+        mutableStateOf(false)
+    }
+    var iconBackgroundState by remember {
+        mutableStateOf(Color.Gray)
+    }
     val multiplier = remember { mutableStateOf(1.3f) }
     Box(
         modifier = modifier
@@ -100,6 +87,11 @@ fun BottomSheetCards(item: BottomSheetCard, modifier: Modifier, onClick: () -> U
                 shape = RoundedCornerShape(6.dp)
             )
             .clickable {
+                isSelected = !isSelected
+                iconBackgroundState = if (isSelected)
+                    Color(0xFF1D8DF3)
+                else
+                    Color.Gray
                 onClick()
             }
     ) {
@@ -120,7 +112,7 @@ fun BottomSheetCards(item: BottomSheetCard, modifier: Modifier, onClick: () -> U
                     .aspectRatio(1f)
                     .clip(CircleShape)
                     .background(
-                        color = Color.Gray,
+                        color = iconBackgroundState,
                     )
                     .padding(4.dp),
                 colorFilter = ColorFilter.tint(Color.White),

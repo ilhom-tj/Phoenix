@@ -52,30 +52,18 @@ class MainActivity : ComponentActivity() {
             )
             val coroutineScope = rememberCoroutineScope()
             PhoenixTheme {
-                BottomSheetScaffold(
-                    sheetBackgroundColor = Color.White.copy(0.5f),
-                    sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                    scaffoldState = bottomSheetScaffoldState,
-                    sheetContent = {
-//                        BottomSheetGrid(list = BottomSheet.bottomSheetCards, modifier = Modifier)
-                    },
-                    modifier = Modifier.clip(RoundedCornerShape(topStart = 8.dp,topEnd = 8.dp)),
-                    sheetPeekHeight = 0.dp
+                NavHost(
+                    navController = navController,
+                    startDestination = NavDestination.Login.route
                 ) {
-                    NavHost(
-                        navController = navController,
-                        startDestination = NavDestination.Login.route
-                    ) {
 
-                        composable(NavDestination.Login.route) {
-                            LoginScreen(navController = navController)
-                        }
-                        composable(NavDestination.Main.route) {
-                            MainScreen(navController = navController)
-                        }
+                    composable(NavDestination.Login.route) {
+                        LoginScreen(navController = navController)
+                    }
+                    composable(NavDestination.Main.route) {
+                        MainScreen(navController = navController)
                     }
                 }
-
             }
         }
     }
